@@ -27,7 +27,7 @@ public class ExampleUnitTest {
 
     @Test(expected = NullPointerException.class)
     public void nullStringTest() {
-        String str = "gfhgfh";
+        String str = null;
         assertTrue(str.isEmpty());
     }
 }
