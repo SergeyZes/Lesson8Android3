@@ -29,9 +29,9 @@ public class NetApiClient implements NetApiClientInterface{
 
     @Override
     public Observable<GithubUser> getUser(String user) {
-        return netApi.getUser(user)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io());
+        return netApi.getUser(user);
+            //    .observeOn(AndroidSchedulers.mainThread())
+             //   .subscribeOn(Schedulers.io());
     }
 
     @Override
