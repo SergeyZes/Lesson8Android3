@@ -50,20 +50,27 @@ public class NetApiClientTest {
     }
 
     @Test
-    public void testWrongStatus() throws InterruptedException, IOException {
+    public void testWrongStatus() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(404).setBody("{}"));
-
         Observer<GithubUser> observer = mock(observerCls.class);
-
 
         NetApiClient netApiClient = NetApiClient.getInstance();
         netApiClient.getUser("SergeyeeZes").subscribe(observer);
         verify(observer).onError(any(Throwable.class));
-        //verify(observer).onNext(null);
-
-        Thread.sleep(3000);
 
     }
+
+    @Test
+    public void testWrongJSON() {
+        mockWebServer.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
+        Observer<GithubUser> observer = mock(observerCls.class);
+
+        NetApiClient netApiClient = NetApiClient.getInstance();
+        netApiClient.getUser("SergeyeeZes").subscribe(observer);
+        verify(observer).onError(any(Throwable.class));
+
+    }
+
 
 
     class observerCls implements Observer<GithubUser>{
@@ -71,24 +78,20 @@ public class NetApiClientTest {
         @Override
         public void onSubscribe(Disposable d) {
 
-            Log.i("test7","In onSubscribe");
         }
 
         @Override
         public void onNext(GithubUser githubUser) {
-            Log.i("test7","In onNext");
 
         }
 
         @Override
         public void onError(Throwable e) {
-            Log.i("test7","In onError");
 
         }
 
         @Override
         public void onComplete() {
-            Log.i("test7","In onComplete");
 
         }
     }
