@@ -77,7 +77,6 @@ public class UserPresenterTest {
         when(netApiClient.getUser(anyString())).thenReturn(new Observable<GithubUser>() {
             @Override
             protected void subscribeActual(Observer<? super GithubUser> observer) {
-              //
             }
         });
 
