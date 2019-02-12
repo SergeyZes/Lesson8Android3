@@ -2,18 +2,17 @@ package com.example.rumpilstilstkin.lesson4;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.rumpilstilstkin.lesson4.data.models.GithubUser;
-import com.example.rumpilstilstkin.lesson4.data.rest.NetApiClient;
+import com.example.rumpilstilstkin.lesson4.presenters.home.UserPresenter;
+import com.example.rumpilstilstkin.lesson4.presenters.home.UserView;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 
 import java.io.IOException;
 
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
@@ -22,7 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(AndroidJUnit4.class)
-public class NetApiClientTest {
+public class UserPresenterTest {
     private static MockWebServer mockWebServer;
 
 
@@ -30,7 +29,6 @@ public class NetApiClientTest {
     public static void setupServer() throws IOException {
         mockWebServer = new MockWebServer();
         mockWebServer.start();
-
     }
 
     @AfterClass
@@ -39,51 +37,55 @@ public class NetApiClientTest {
 
     }
 
-
     @Test
     public void testWrongStatus() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(404).setBody("{}"));
-        Observer<GithubUser> observer = mock(observerCls.class);
+        UserPresenter userPresenter = new UserPresenter();
+        UserView view = mock(UserViewCls.class);
 
-        NetApiClient netApiClient = NetApiClient.getInstance();
-        netApiClient.getUser("SergeyrZes").subscribe(observer);
-        verify(observer).onError(any(Throwable.class));
+        userPresenter.attachView(view);
+        verify(view).showError(any(Throwable.class));
 
     }
 
     @Test
     public void testWrongJSON() {
         mockWebServer.enqueue(new MockResponse().setResponseCode(200).setBody("{}"));
-        Observer<GithubUser> observer = mock(observerCls.class);
+        UserPresenter userPresenter = new UserPresenter();
+        UserView view = mock(UserViewCls.class);
 
-        NetApiClient netApiClient = NetApiClient.getInstance();
-        netApiClient.getUser("SergeyZes").subscribe(observer);
-        verify(observer).onError(any(Throwable.class));
+        userPresenter.attachView(view);
+        verify(view).showError(any(Throwable.class));
 
     }
 
-
-    class observerCls implements Observer<GithubUser> {
+    class UserViewCls implements UserView {
 
         @Override
-        public void onSubscribe(Disposable d) {
+        public void showName(String name) {
 
         }
 
         @Override
-        public void onNext(GithubUser githubUser) {
+        public void showImage(String imageUrl) {
 
         }
 
         @Override
-        public void onError(Throwable e) {
+        public void showError(Throwable e) {
 
         }
 
         @Override
-        public void onComplete() {
+        public void showLoading() {
+
+        }
+
+        @Override
+        public void hideLoading() {
 
         }
     }
+
 
 }

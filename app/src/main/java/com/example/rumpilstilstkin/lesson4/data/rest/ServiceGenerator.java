@@ -16,7 +16,7 @@ public class ServiceGenerator {
 
     public <S> S createService(Class<S> serviceClass) {
         return new Retrofit.Builder()
-                .baseUrl("https://api.github.com")
+                .baseUrl("https://localhost:8080")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(getClient())
