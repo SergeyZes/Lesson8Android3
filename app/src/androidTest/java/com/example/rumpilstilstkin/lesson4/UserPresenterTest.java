@@ -28,7 +28,7 @@ public class UserPresenterTest {
     @BeforeClass
     public static void setupServer() throws IOException {
         mockWebServer = new MockWebServer();
-        mockWebServer.start();
+        mockWebServer.start(8080);
     }
 
     @AfterClass
